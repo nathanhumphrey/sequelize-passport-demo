@@ -1,15 +1,22 @@
 {
   "name": "passport-sequelize",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "This project demonstrates only the basics for getting started with Passport and Sequelize; it should not be used, as is, in production.",
   "scripts": {
     "start": "node server",
     "dev": "nodemon server --watch server"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["passport", "sequelize", "express", "authentication"],
+  "author": {
+    "name" : "Nathan Humphrey",
+    "email" : "nathpaulhump@gmail.com",
+    "url" : "https://nathanhumphrey.ca"
+  },
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/nathanhumphrey/sequelize-passport-demo.git"
+  },
+  "license": "MIT",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
