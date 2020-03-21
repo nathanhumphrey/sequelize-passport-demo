@@ -8,12 +8,10 @@ const Strategy = require('passport-local').Strategy;
 // Requiring our models for syncing
 const db = require('../db/models/index');
 
-// custom middleware to require authentication for a route
-// if the user is not authenticated, redirect to the login route
-const requireAuth = (req, res, next) => {
-  if (!req.isAuthenticated()) return res.redirect('/login');
-  next();
-};
+// grab the User model from the db object, the sequelize
+// index.js file takes care of the exporting for us and the
+// syntax below is called destructuring, its an es6 feature
+const { User } = db;
 
 // Configure the local strategy for use by Passport.
 //
@@ -26,7 +24,7 @@ passport.use(
     {
       usernameField: 'email'
     },
-    async function(email, password, cb) {
+    async (email, password, cb) => {
       try {
         // User.authenticate throws if user doesn't exist or password is invalid
         const user = await User.authenticate(email, password);
@@ -45,20 +43,29 @@ passport.use(
 // typical implementation of this is as simple as supplying the user ID when
 // serializing, and querying the user record by ID from the database when
 // deserializing.
-passport.serializeUser(function(user, cb) {
-  console.log('SERIALIZE: ', user.id);
+passport.serializeUser((user, cb) => {
   cb(null, user.id);
 });
 
-passport.deserializeUser(async function(id, cb) {
-  console.log('DE-SERIALIZE: ', id);
+passport.deserializeUser(async (id, cb) => {
   try {
-    const user = await db.User.findOne({ where: { id } });
+    const user = await User.findOne({ where: { id } });
     cb(null, user);
   } catch (err) {
     cb(err);
   }
 });
+
+/**
+ * Custom middleware that requires authentication for a route.
+ * If the user is not authenticated, redirect to the login route.
+ */
+const requireAuth = (req, res, next) => {
+  if (!req.isAuthenticated || !req.isAuthenticated()) {
+    return res.redirect('/login');
+  }
+  next();
+};
 
 // set up the Express App
 const app = express();
@@ -83,11 +90,6 @@ app.use(
 // session.
 app.use(passport.initialize());
 app.use(passport.session());
-
-// grab the User model from the db object, the sequelize
-// index.js file takes care of the exporting for us and the
-// syntax below is called destructuring, its an es6 feature
-const { User } = db;
 
 // Define routes
 
@@ -152,7 +154,7 @@ app.delete('/logout', (req, res) => {
 });
 
 /* Me Route - get the currently logged in user 
- * (requires that the user is authenticated)
+ * (requires authentication)
 ========================================================= */
 app.get('/me', requireAuth, (req, res) => {
   res.json({

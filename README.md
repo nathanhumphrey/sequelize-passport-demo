@@ -3,16 +3,12 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE.md)
 
+_This project demonstrates only the basics for getting started with [Passport](http://www.passportjs.org/) and [Sequelize](https://sequelize.org/); it should not be used, as is, in production._
+
 Initialize the project:
 
 ```bash
 npm init
-```
-
-Initialze sequelize:
-
-```bash
-npx sequelize-cli init
 ```
 
 Run the server with the following:
@@ -21,19 +17,19 @@ Run the server with the following:
 npm run dev
 ```
 
-Use a REST client (e.g. POSTMAN, Advanced REST Client, etc.) to send test requests.
+Use a REST client (e.g. [POSTMAN](https://www.postman.com/), [Advanced REST Client](https://chrome.google.com/webstore/detail/advanced-rest-client/hgmloofddffdnphfgcellkdfbfbjeloo), etc.) to send test requests.
 
-All routes will respond with a JSON object that includes at a minimum:
+All routes (except the logout route) will respond with a JSON object that includes at a minimum:
 
 - The route path
 - The route method
 - The user object, if logged in
 
-Additonal route-specific data may also be included.
+Additional route-specific data may also be included.
 
 ## 1. INDEX ROUTE
 
-Send a GET request to http://localhost:8080/ and receive a response similar to the folowing:
+Send a GET request to http://localhost:8080/ and receive a response similar to the following:
 
 ```json
 {
@@ -53,7 +49,7 @@ Send a POST request to http://localhost:8080/register with the following payload
 }
 ```
 
-If successful, you should recieve a response similar to the following:
+If successful, you should receive a response similar to the following:
 
 ```json
 {
@@ -81,7 +77,7 @@ Send a POST request to http://localhost:8080/login with the following payload:
 }
 ```
 
-If successful, you should recieve a response similar to the following:
+If successful, you should receive a response similar to the following:
 
 ```json
 {
@@ -100,11 +96,11 @@ If successful, you should recieve a response similar to the following:
 }
 ```
 
-## 4. POFILE ROUTE
+## 4. PROFILE ROUTE
 
 You should be successfully logged in and should see the user in the response.
 
-Send a GET request to http://localhost:8080/me and receive a response similar to the folowing:
+Send a GET request to http://localhost:8080/me and receive a response similar to the following:
 
 ```json
 {
@@ -131,4 +127,4 @@ Send a DELETE request to http://localhost:8080/logout and be redirected to the i
 
 ## License
 
-This respository is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+This repository is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
