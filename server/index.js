@@ -61,6 +61,7 @@ passport.deserializeUser(async (id, cb) => {
  * If the user is not authenticated, redirect to the login route.
  */
 const requireAuth = (req, res, next) => {
+  console.log(req.headers);
   if (!req.isAuthenticated || !req.isAuthenticated()) {
     return res.redirect('/login');
   }
@@ -70,6 +71,23 @@ const requireAuth = (req, res, next) => {
 // set up the Express App
 const app = express();
 const PORT = process.env.PORT || 8080;
+
+// allow for cross-origin requests
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Credentials', true);
+  // !! allow requests from any origin, perhaps not the best for production ...
+  res.header('Access-Control-Allow-Origin', req.headers.origin);
+  res.header(
+    'Access-Control-Allow-Methods',
+    'GET,PUT,POST,DELETE,UPDATE,OPTIONS'
+  );
+  res.header(
+    'Access-Control-Allow-Headers',
+    'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept'
+  );
+
+  next();
+});
 
 // Express middleware that allows POSTing data
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -112,6 +130,8 @@ app.post('/register', async (req, res) => {
   // we are never storing plain text passwords. This is crucial
   // for keeping your db clean of sensitive data
   const hash = bcrypt.hashSync(req.body.password, 10);
+
+  // TODO: first, check that the user doesn't already exist
 
   try {
     // create a new user with the password hash from bcrypt
